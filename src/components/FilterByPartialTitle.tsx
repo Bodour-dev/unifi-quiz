@@ -1,16 +1,5 @@
-import {
-  FormControl,
-  IconButton,
-  InputAdornment,
-  TextField,
-  createStyles,
-} from "@mui/material";
-import React, {
-  FormEvent,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from "react";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
 const FilterByPartialTitle: React.FC<any> = ({ onSubmit }) => {
@@ -29,7 +18,6 @@ const FilterByPartialTitle: React.FC<any> = ({ onSubmit }) => {
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
-      // let searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
       onSubmit(searchTerm);
     }
   };

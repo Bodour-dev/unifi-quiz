@@ -8,19 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Fade from "@mui/material/Fade";
 import { BikeProps } from "../GlobalTypes";
 import noBikeImg from "../assets/img/bike_placeholder.svg";
-
-export const UnixTimestampToDate: React.FC<{ timestamp: number }> = ({
-  timestamp,
-}) => {
-  // Convert Unix timestamp to milliseconds
-  const date_stolen = new Date(timestamp * 1000).toLocaleString("en-US");
-  return (
-    <small>
-      <strong>Date:</strong> {date_stolen}
-    </small>
-  );
-};
-
+import { UnixTimestampToDate } from "../utils/UnixTimestampToDate";
 
 const BikeCard: React.FC<{ bike: BikeProps }> = ({ bike }) => {
   const [expanded, setExpanded] = useState(true);
