@@ -1,11 +1,6 @@
 import React from 'react';
 import { Pagination as MuiPagination } from '@mui/material';
-
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
+import { PaginationProps } from '../GlobalTypes';
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   return (
@@ -13,6 +8,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
       count={totalPages}
       page={currentPage}
       onChange={(e, page) => onPageChange(page)}
+      variant="outlined" 
+      shape="rounded"
+      color="primary"
+      sx={{mt:'2rem',mb:'4rem',display:'flex',justifyContent:'center'}}
     />
   );
 };
