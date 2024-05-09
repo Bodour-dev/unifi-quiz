@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
-import { SERVER_URL } from "../services/constants";
+import { SERVER_URL } from "../constants";
 
 let queryURL = "location=Munich&stolenness=stolen&per_page=10";
 
 // proximity is correct without serial & query :31
-// stolenness stolen case return  ("status": "stolen", "stolen": true) these params incorrect values
+// stolenness stolen case return  ("status": "stolen", "stolen": true && "status": "found", "stolen": false) these params incorrect values
 // 18.66.192.93 even when i used this ip from geo location,return incorrect response
 
 const fetchStolenBikes = async (page: number, searchTerm?: string) => {
@@ -15,10 +15,7 @@ const fetchStolenBikes = async (page: number, searchTerm?: string) => {
   return response.data.bikes;
 };
 
-export const useStolenBikes = (
-  page: number,
-  searchTerm: string
-) => {
+export const useStolenBikes = (page: number, searchTerm: string) => {
   return useQuery({
     queryKey: ["stolenBikes", page, searchTerm],
     queryFn: () => fetchStolenBikes(page, searchTerm),

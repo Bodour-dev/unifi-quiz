@@ -2,24 +2,27 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
-const FilterByPartialTitle: React.FC<any> = ({ onSubmit }) => {
+const FilterByPartialTitle: React.FC<{
+  onSubmit: (searchTerm: string) => void;
+}> = ({ onSubmit }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  // const filteredData = data.filter((item) =>
-  //   item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
 
-  const handleChangeSearchField = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSearchTerm((event.target as HTMLInputElement).value.toLowerCase());
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = (event.target as HTMLInputElement).value;
+    setSearchTerm(value);
+    if (value === "") {
+      onSubmit("");
+    }
   };
 
-  const handleKeyDownSearchField = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      onSubmit(searchTerm);
+      handleSearchSubmit();
     }
+  };
+
+  const handleSearchSubmit = () => {
+    onSubmit(searchTerm);
   };
 
   return (
@@ -29,12 +32,13 @@ const FilterByPartialTitle: React.FC<any> = ({ onSubmit }) => {
         label="Search for Stolen Bike"
         variant="outlined"
         placeholder="Search By Title..."
-        onChange={handleChangeSearchField}
-        onKeyDown={handleKeyDownSearchField}
+        value={searchTerm}
+        onChange={handleSearchChange}
+        onKeyDown={handleKeyDown}
         InputProps={{
           endAdornment: (
-            <InputAdornment onClick={() => onSubmit(searchTerm)} position="end">
-              <IconButton aria-label="search">
+            <InputAdornment position="end">
+              <IconButton onClick={handleSearchSubmit} aria-label="search">
                 <SearchIcon />
               </IconButton>
             </InputAdornment>

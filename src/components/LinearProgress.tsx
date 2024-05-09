@@ -37,7 +37,7 @@ export default function LinearWithValueLabel() {
   }, []);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", marginTop: "-1rem" }}>
       <LinearProgressWithLabel value={progress} />
     </Box>
   );

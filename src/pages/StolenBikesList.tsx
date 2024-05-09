@@ -3,13 +3,12 @@ import { useStolenBikes } from "../hooks/useStolenBikes";
 import Pagination from "../components/Pagination";
 import { BikeProps } from "../GlobalTypes";
 import { useCountStolenBikes } from "../hooks/useCountStolenBikes";
-import BikeCard from "../components/Card";
-import { Container } from "@mui/material";
+import BikeCard from "../components/BikeCard";
+import { Container, Alert } from "@mui/material";
 import FilterByPartialTitle from "../components/FilterByPartialTitle";
-import Alert from "@mui/material/Alert";
-import LinearWithValueLabel from "../components/LinearProgress";
+import LinearProgress from "../components/LinearProgress";
 
-const StolenBikesList: React.FC<BikeProps> = () => {
+const StolenBikesList: React.FC = () => {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const {
@@ -17,30 +16,19 @@ const StolenBikesList: React.FC<BikeProps> = () => {
     isLoading,
     error,
   } = useStolenBikes(page, searchTerm);
-  const { data: countStolenBikes } = useCountStolenBikes();
+  const { data: countStolenBikes } = useCountStolenBikes(searchTerm);
   let totalPages = Math.ceil(countStolenBikes / 10);
-
-  if (isLoading) {
-    return <LinearWithValueLabel />;
-  }
-
-  if (error) {
-    return (
-      <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
-        {error.message}
-      </Alert>
-    );
-  }
 
   const handleSearchSubmit = (searchFieldValue: string) => {
     setSearchTerm(searchFieldValue);
+    setPage(1);
   };
 
   return (
     <>
       <div
         style={{
-          height: "300px",
+          height: "400px",
           width: "100%,",
           backgroundColor: "aliceblue",
           display: "flex",
@@ -51,23 +39,42 @@ const StolenBikesList: React.FC<BikeProps> = () => {
         <FilterByPartialTitle onSubmit={handleSearchSubmit} />
         {/* <FilterByDateRange /> */}
       </div>
-
-      <Container maxWidth="md" sx={{ my: "-2.5rem" }}>
-        {stolenBikes.length ? (
-          stolenBikes.map((bike: BikeProps) => {
-            return <BikeCard key={bike.id} bike={bike} />;
-          })
-        ) : (
-          <h2>No Data Found!</h2>
-        )}
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={(page) => {
-            setPage(page);
-          }}
-        />
-      </Container>
+      {isLoading ? (
+        <LinearProgress />
+      ) : error ? (
+        <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+          {error.message}
+        </Alert>
+      ) : (
+        <Container maxWidth="md" sx={{ my: "-2.5rem", pb: "2rem" }}>
+          {stolenBikes.length > 0 ? (
+            stolenBikes.map((bike: BikeProps) => (
+              <BikeCard key={bike.id} bike={bike} />
+            ))
+          ) : (
+            <h2 style={{ marginTop: "5rem" }}>No Data Found!</h2>
+          )}
+          {countStolenBikes !== undefined && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ marginBottom: "2rem" }}>
+                Total Bikes Stolen:
+                <strong style={{ color: "red" }}>{countStolenBikes}</strong>
+              </div>
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            </div>
+          )}
+        </Container>
+      )}
     </>
   );
 };
