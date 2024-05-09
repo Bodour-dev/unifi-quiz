@@ -1,12 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import StolenBikesList from './pages/StolenBikesList';
+import React from "react";
+import "./App.css";
+import StolenBikesList from "./pages/StolenBikesList";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <div className="App">
-        <StolenBikesList />
+      <Navbar />
+      <StolenBikesList />
     </div>
   );
 }
